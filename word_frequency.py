@@ -1,0 +1,83 @@
+STOP_WORDS = [
+
+    'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from', 'has', 'he',
+
+    'i', 'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the', 'to', 'were',
+
+    'will', 'with'
+
+]
+
+def print_word_freq(file):
+
+    """Read in `file` and print out the frequency of words in that file."""
+    """formats words for printing"""
+    items = []
+
+    with open(file) as f:
+
+        for item in f:
+
+            items.append(item)
+
+    freq = {}
+
+    for item in items:
+
+        ftd = item.replace('.', '').replace(',', '').replace('!', '').replace('?', '').lower()
+
+        for w in ftd.split():
+
+            word = w.strip()
+
+            if word in STOP_WORDS or word == '':
+
+                continue
+
+            if word in freq:
+
+                freq[word] += 1
+
+            else:
+
+                freq[word] = 1
+
+    for word in sorted(freq, key=freq.get, reverse=True):
+
+        print(word,'|',"*" * freq[word])
+
+    pass
+
+
+
+
+
+if __name__ == "__main__":
+
+    import argparse
+
+    from pathlib import Path
+
+
+
+    parser = argparse.ArgumentParser(
+
+        description='Get the word frequency in a text file.')
+
+    parser.add_argument('file', help='file to read')
+
+    args = parser.parse_args()
+
+
+
+    file = Path(args.file)
+
+    if file.is_file():
+
+        print_word_freq(file)
+
+    else:
+
+        print(f"{file} does not exist!")
+
+        exit(1)
